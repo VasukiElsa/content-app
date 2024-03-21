@@ -10,6 +10,7 @@ class HistoricalEcho(models.Model):
         return self.title
     
 class Contents(models.Model):
+    _id = models.ObjectIdField()
     label = models.CharField(max_length=255)
     value = models.TextField()
     historical_echo = models.ForeignKey(HistoricalEcho, on_delete=models.CASCADE)
