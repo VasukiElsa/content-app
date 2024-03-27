@@ -1,41 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import {Outlet, Link} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 
 const Layout = () => {
+    const navigate = useNavigate();
     const [historicalEchoes, setHistoricalEchoes] = useState([]);
     const [contents, setContents] = useState([]);
-    const [filteredContents, setFilteredContents] = useState([]);
+   
 
     useEffect(() => {
         getHistoricalEchoes();
         getContents();
     }, []);
 
+
     const getHistoricalEchoes = async() => {
         const response = await fetch('http://localhost:8000/historical_echo/');
 
         setHistoricalEchoes(await response.json());
-    }
+    };
 
     const getContents = async() => {
         const response = await fetch('http://localhost:8000/contents/');
         setContents(await response.json());
-    }
+    };
 
     
 
-    const filterContents = (props) =>{
-        const filteredContent = contents.filter(item=>item.historical_echo._id === props);
-        setFilteredContents(filteredContent);
-    }
+    const filterContents = (props) =>{    
+        const result = contents.filter(item=>item.historical_echo._id === props);
+
+        const  particularEcho = historicalEchoes.find(echo => echo._id === props);
+        
+        const title = particularEcho.title;
+
+        navigate('/explore', { state: { result, title }});   
+
+    };
     
     
 
     return(
         <div>
             <h1>Historical Echoes</h1>
-                {historicalEchoes.map((historicalEcho) => (             
+                {historicalEchoes.map((historicalEcho) => (   
+                              
                 <>
                 <ul>
                     <li>
@@ -48,21 +57,16 @@ const Layout = () => {
                         {historicalEcho.created_at}
                     </li>
                 </ul>
-                 <button onClick={() => filterContents(historicalEcho._id)}>Explore it!</button>
+                <button onClick={() => filterContents(historicalEcho._id)}>
+                    Explore it!
+                </button>   
               
                 </>
                 ))}
 
-                <h2>Contents</h2>
-                {filteredContents.map((content) => (
-                    <>
-                    <ul>
-                        <li>{content.label}</li>
-                        <li>{content.value}</li>
-                    </ul>
-                    </>
+                
+                
 
-                ))}
         </div>
     );
 
