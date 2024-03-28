@@ -47,6 +47,9 @@ CORS_ORIGIN_WHITELIST  = (
     'http://192.168.93.17:3000',
 )
 
+MEDIA_ROOT = BASE_DIR/'media'
+MEDIA_URL = '/media/'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
