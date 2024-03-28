@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
+
 const Layout = () => {
     const navigate = useNavigate();
     const [historicalEchoes, setHistoricalEchoes] = useState([]);
@@ -43,9 +44,14 @@ const Layout = () => {
     return(
         <div>
             <h1>Historical Echoes</h1>
+            
                 {historicalEchoes.map((historicalEcho) => (   
+                    
                               
                 <>
+                <div >
+                    <img src={historicalEcho.cover} alt = {historicalEcho.title} />
+                </div>
                 <ul>
                     <li>
                         {historicalEcho.title}
