@@ -5,6 +5,7 @@ class HistoricalEcho(models.Model):
     title = models.CharField(max_length = 255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    cover = models.ImageField(upload_to = 'images/')
 
     def __str__(self):
         return self.title
