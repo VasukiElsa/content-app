@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
+import './style.css';
 
 const Layout = () => {
     const navigate = useNavigate();
@@ -35,46 +34,64 @@ const Layout = () => {
         
         const title = particularEcho.title;
 
-        navigate('/explore', { state: { result, title }});   
+        const cover = particularEcho.cover;
+
+        navigate('/explore', { state: { result, title, cover }});   
 
     };
-    
-    
 
+    const formatDate = (dateString) => {
+
+        const date = new Date(dateString);
+        const options = { month : 'short', day : 'numeric', year : 'numeric'};
+        return date.toLocaleString('en-US', options);
+        
+    };
+
+    
     return(
-        <div>
-            <h1>Historical Echoes</h1>
-            
-                {historicalEchoes.map((historicalEcho) => (   
+        <>
+        <header>
+
+            <h1 id="heading">Historical Echoes</h1>
+
+            <p id="para">Explore ancient wonders that will leave you breathless!</p>
+
+        </header>
+        
+        <div className="image-container">   
+
+                {historicalEchoes.map((historicalEcho, index) => ( 
                     
-                              
-                <>
-                <div >
-                    <img src={historicalEcho.cover} alt = {historicalEcho.title} />
-                </div>
-                <ul>
-                    <li>
+               
+                <div key={index} className="image-wrapper">
+                
+                  <img id = "imageEl" src={historicalEcho.cover} alt = {historicalEcho.title}  onClick={() => filterContents(historicalEcho._id)}/>
+                
+                  <ul className="echoes">
+
+                    <li className="echo-title" onClick={() => filterContents(historicalEcho._id)}>
                         {historicalEcho.title}
                     </li>
-                    <li>
+
+                    <li className="echo-description"> 
                         {historicalEcho.description}
                     </li>
-                    <li>
-                        {historicalEcho.created_at}
+
+                    <li className="created-at">
+                        Published at : {formatDate(historicalEcho.created_at)}
                     </li>
+
                 </ul>
-                <button onClick={() => filterContents(historicalEcho._id)}>
-                    Explore it!
-                </button>   
+
+                </div>
               
-                </>
                 ))}
-
-                
-                
-
         </div>
+      
+        </>
     );
+
 
     
 };
